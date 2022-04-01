@@ -1,48 +1,19 @@
-# When manually running the pipeline, you can select whether it
-# succeeds or fails.
-parameters:
-- name: succeed
-  displayName: Succeed or fail
-  type: boolean
-  default: false
-
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: `ubuntu-latest`
 
-jobs:
-- job: Work
-  steps:
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script'
+steps:
+- bash: az --version
+  displayName: 'Show Azure CLI version'
 
-  # This malformed command causes the job to fail
-  # Only run this command if the succeed variable is set to false
-  - script: git clone malformed input
-    condition: eq(${{ parameters.succeed }}, false)
+- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
+  displayName: 'Set default Azure DevOps organization and project'
 
-# This job creates a work item, and only runs if the previous job failed
-- job: ErrorHandler
-  dependsOn: Work
-  condition: failed()
-  steps: 
-  - bash: |
-      az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
-        --type bug \
-        --org $(System.TeamFoundationCollectionUri) \
-        --project $(System.TeamProject)
-    env: 
-      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-    displayName: 'Create work item on failure22'
-  - bash: |
-      az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
-        --type bug \
-        --org $(System.TeamFoundationCollectionUri) \
-        --project $(System.TeamProject)
-    env: 
-      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-    displayName: 'Create work item on failure 2'
+- bash: |
+    az pipelines build list
+    git pr list
+  displayName: 'Show build list and PRs'
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

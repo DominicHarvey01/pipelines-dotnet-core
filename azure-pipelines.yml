@@ -30,7 +30,7 @@ jobs:
   steps: 
   - bash: |
       az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
+        --title "Build $(build.buildNumber) failed - bug 1" \
         --type bug \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
@@ -39,7 +39,7 @@ jobs:
     displayName: 'Create work item on failure22'
   - bash: |
       az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
+        --title "Build $(build.buildNumber) failed - bug 2" \
         --type bug \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)

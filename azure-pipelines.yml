@@ -31,7 +31,7 @@ jobs:
   - bash: |
       az boards work-item create \
         --title "Build $(build.buildNumber) failed - bug 1" \
-        --type User Story \
+        --type "User Story" \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
     env: 

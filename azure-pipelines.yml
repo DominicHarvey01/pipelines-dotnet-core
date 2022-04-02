@@ -30,7 +30,7 @@ jobs:
   steps: 
   - bash: |
       az boards work-item create \
-        --title "Build $(build.buildNumber) failed - bug 1" \
+        --title "Build $(build.buildNumber) Do This - US 1" \
         --type "User Story" \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
@@ -46,3 +46,20 @@ jobs:
     env: 
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
     displayName: 'Create work item on failure 2'
+
+ 
+- job: Incident_Mgt  
+  dependsOn: Work
+  condition: succeed()
+  steps:
+    - bash: |
+        az boards work-item create \
+          --title "Build $(build.buildNumber) Do This - IM US2" \
+          --type "User Story" \
+          --org $(System.TeamFoundationCollectionUri) \
+          --project $(System.TeamProject)
+      env:
+        AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+      displayName: 'Create work item on failure 3'
+     
+

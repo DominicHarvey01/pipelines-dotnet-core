@@ -50,7 +50,7 @@ jobs:
  
 - job: Incident_Mgt  
   dependsOn: Work
-  condition: succeed()
+  condition: succeeded()
   steps:
     - bash: |
         az boards work-item create \

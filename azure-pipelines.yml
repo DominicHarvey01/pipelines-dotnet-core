@@ -12,6 +12,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+  extends:
+    template: simple-param.yml
+    parameters:
+        yesNo: false # set to a non-boolean value to have the build fail  
+
 jobs:
 - job: Work
   steps:
@@ -68,10 +73,4 @@ jobs:
         AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
         displayName: 'List variable groups using the script step'
 
-      # Using the task syntax
-    - task: CmdLine@2
-      inputs:
-        script: az pipelines variable-group list --output table
-      env:
-        AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-      displayName: 'List variable groups using the command line task'
+      

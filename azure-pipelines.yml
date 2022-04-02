@@ -7,7 +7,7 @@ parameters:
   default: false
 
 trigger:
-- main
+- master
 
 pool:
   vmImage: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
   - bash: |
       az boards work-item create \
         --title "Build $(build.buildNumber) failed - bug 1" \
-        --type bug \
+        --type User Story \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
     env: 
